@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+:root {
+  --bg:       #0A0A0A;
+  --fg:       #F0F0F0;
+  --muted:    rgba(240,240,240,0.45);
+  --dim:      rgba(240,240,240,0.22);
+  --card:     #111111;
+  --border:   rgba(240,240,240,0.08);
+  --border-mid: rgba(240,240,240,0.14);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  overflow-x: hidden;
+}
+
+/* ── Grid texture for hero ── */
+.grid-texture {
+  background-image:
+    linear-gradient(rgba(240,240,240,0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(240,240,240,0.022) 1px, transparent 1px);
+  background-size: 52px 52px;
+}
+
+/* ── Step card bottom bar slide ── */
+.step-card { position: relative; overflow: hidden; }
+.step-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--fg);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+.step-card:hover::after { transform: scaleX(1); }
+
+/* ── Pulse dot ── */
+@keyframes dot-pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(240,240,240,0.4); }
+  50%       { opacity: 0.25; box-shadow: 0 0 0 6px rgba(240,240,240,0); }
+}
+.pulse-dot {
+  display: inline-block;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--fg);
+  flex-shrink: 0;
+  animation: dot-pulse 2.2s ease-in-out infinite;
+}
+
+/* ── Scroll reveal ── */
+.fade-up {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.fade-up.in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
