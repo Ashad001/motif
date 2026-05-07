@@ -38,5 +38,7 @@
 
     "moduleResolution": "nodenext",
     "esModuleInterop": true,
-  }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["web", "node_modules", "dist"]
 }

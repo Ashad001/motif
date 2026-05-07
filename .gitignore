@@ -37,3 +37,6 @@ next-env.d.ts
 
 # build output
 dist/
+
+# landing page (Next.js — run separately)
+web/
