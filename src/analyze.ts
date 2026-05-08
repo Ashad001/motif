@@ -1,7 +1,7 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { GoogleAIFileManager } from "@google/generative-ai/server";
 import { resolveVideoFile } from "./extract.js";
-import { buildAnalysisPrompt } from "./prompts.js";
+import { buildAnalysisPrompt, type AnalysisMode } from "./prompts.js";
 
 const DEBUG = process.env["MOTIF_DEBUG"] === "true";
 
@@ -13,6 +13,7 @@ export interface AnalysisResult {
   what_i_see: string;
   root_cause: string;
   fix: string;
+  diff_before_after?: string;
   confidence: "high" | "medium" | "low";
   frames_analyzed: number;
 }
@@ -20,7 +21,9 @@ export interface AnalysisResult {
 export async function analyzeVideo(
   videoPath: string,
   code: string,
-  hint?: string
+  hint?: string,
+  mode?: AnalysisMode,
+  language?: string
 ): Promise<AnalysisResult> {
   const apiKey = process.env["GEMINI_API_KEY"];
   if (!apiKey) {
@@ -61,9 +64,11 @@ export async function analyzeVideo(
   log(`File is ACTIVE: ${fileState.uri}`);
 
   const genai = new GoogleGenerativeAI(apiKey);
-  const model = genai.getGenerativeModel({ model: "gemini-2.5-flash" });
+  const modelName = process.env["MOTIF_MODEL"] ?? "gemini-2.5-flash";
+  const model = genai.getGenerativeModel({ model: modelName });
+  log(`Using model: ${modelName}`);
 
-  const prompt = buildAnalysisPrompt(code, hint);
+  const prompt = buildAnalysisPrompt(code, hint, mode, language);
 
   log("Sending to Gemini for analysis...");
 
@@ -77,15 +82,18 @@ export async function analyzeVideo(
     prompt,
   ]);
 
-  const text = result.response.text().trim();
-  log(`Raw Gemini response: ${text}`);
+  const rawText = result.response.text().trim();
+  log(`Raw Gemini response: ${rawText}`);
+
+  // Strip markdown code fences if Gemini wrapped the JSON
+  const text = rawText.replace(/^```(?:json)?\n?/, "").replace(/\n?```$/, "").trim();
 
   let parsed: AnalysisResult;
   try {
     parsed = JSON.parse(text) as AnalysisResult;
   } catch {
     throw new Error(
-      `Gemini returned a response that couldn't be parsed as JSON. Raw response:\n\n${text}`
+      `Gemini returned a response that couldn't be parsed as JSON. Raw response:\n\n${rawText}`
     );
   }
 

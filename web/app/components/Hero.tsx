@@ -1,5 +1,7 @@
 "use client";
 
+import DemoVisual from "./DemoVisual";
+
 const CHIPS = ["Cursor", "Claude Code", "Claude Desktop", "Any MCP Client"];
 
 export default function Hero() {
@@ -31,7 +33,7 @@ export default function Hero() {
           position: "relative",
         }}
       >
-        Beta · Gemini 1.5 Pro · MCP Server
+        Beta · Gemini 2.5 Flash · MCP Server
       </div>
 
       {/* Heading */}
@@ -152,6 +154,9 @@ export default function Hero() {
         </a>
       </div>
 
+      {/* Live demo */}
+      <DemoVisual />
+
       {/* Works With */}
       <div
         style={{
@@ -161,6 +166,7 @@ export default function Hero() {
           flexWrap: "wrap",
           justifyContent: "center",
           position: "relative",
+          marginTop: "3rem",
         }}
       >
         <span

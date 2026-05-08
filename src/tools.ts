@@ -4,6 +4,9 @@ import {
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
 import { analyzeVideo } from "./analyze.js";
+import { type AnalysisMode } from "./prompts.js";
+
+const VALID_MODES: AnalysisMode[] = ["animation", "layout", "interaction", "general"];
 
 export function registerTools(server: Server) {
   server.setRequestHandler(ListToolsRequestSchema, async () => ({
@@ -13,7 +16,9 @@ export function registerTools(server: Server) {
         description:
           "Watch a video or GIF of a UI bug and return a diagnosis with a code fix. " +
           "Provide the path to the recording and the relevant source code. " +
-          "Powered by Gemini 1.5 Pro.",
+          "Optionally specify a mode (animation, layout, interaction, general) to focus the analysis, " +
+          "a language for the fix (e.g. TypeScript, Python), and a hint to guide Gemini. " +
+          "Powered by Gemini via the MOTIF_MODEL env var (default: gemini-2.5-flash).",
         inputSchema: {
           type: "object",
           properties: {
@@ -31,6 +36,19 @@ export function registerTools(server: Server) {
               type: "string",
               description:
                 "Optional hint to focus the analysis (e.g. 'focus on the scroll', 'look at the modal animation').",
+            },
+            mode: {
+              type: "string",
+              enum: ["animation", "layout", "interaction", "general"],
+              description:
+                "Analysis mode. 'animation' focuses on motion artifacts, 'layout' on positioning/alignment, " +
+                "'interaction' on hover/click/focus feedback, 'general' covers everything. Defaults to 'general'.",
+            },
+            language: {
+              type: "string",
+              description:
+                "Programming language for the fix (e.g. 'TypeScript', 'JavaScript', 'Python'). " +
+                "Defaults to whatever language is in the provided code.",
             },
           },
           required: ["video_path", "code"],
@@ -51,6 +69,8 @@ export function registerTools(server: Server) {
       video_path?: unknown;
       code?: unknown;
       hint?: unknown;
+      mode?: unknown;
+      language?: unknown;
     };
 
     if (typeof args.video_path !== "string" || !args.video_path) {
@@ -68,15 +88,26 @@ export function registerTools(server: Server) {
     }
 
     const hint = typeof args.hint === "string" ? args.hint : undefined;
+    const language = typeof args.language === "string" ? args.language : undefined;
+
+    const rawMode = typeof args.mode === "string" ? args.mode : "general";
+    const mode: AnalysisMode = VALID_MODES.includes(rawMode as AnalysisMode)
+      ? (rawMode as AnalysisMode)
+      : "general";
 
     try {
-      const result = await analyzeVideo(args.video_path, args.code, hint);
+      const result = await analyzeVideo(args.video_path, args.code, hint, mode, language);
+
+      const diffSection = result.diff_before_after
+        ? `\nDIFF:\n${result.diff_before_after}\n`
+        : "";
 
       const output = [
         `motif analyzed ${args.video_path} (${result.frames_analyzed} frames)\n`,
         `WHAT I SEE:\n${result.what_i_see}\n`,
         `ROOT CAUSE:\n${result.root_cause}\n`,
-        `FIX:\n${result.fix}\n`,
+        `FIX:\n${result.fix}`,
+        diffSection,
         `CONFIDENCE: ${result.confidence}`,
       ].join("\n");
 
