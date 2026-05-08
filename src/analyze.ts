@@ -40,10 +40,28 @@ export async function analyzeVideo(
     displayName: "motif-bug-recording",
   });
 
-  log(`Upload complete: ${upload.file.uri}`);
+  log(`Upload complete: ${upload.file.uri} — waiting for ACTIVE state...`);
+
+  // Poll until the file is ACTIVE (Gemini processes uploads asynchronously)
+  let fileState = upload.file;
+  const maxWaitMs = 60_000;
+  const pollIntervalMs = 2_000;
+  const start = Date.now();
+  while ((fileState.state as string) !== "ACTIVE") {
+    if (Date.now() - start > maxWaitMs) {
+      throw new Error(
+        `Gemini file processing timed out after ${maxWaitMs / 1000}s. The file may be too large or the API is slow. Try again.`
+      );
+    }
+    await new Promise((r) => setTimeout(r, pollIntervalMs));
+    fileState = await fileManager.getFile(fileState.name);
+    log(`File state: ${fileState.state}`);
+  }
+
+  log(`File is ACTIVE: ${fileState.uri}`);
 
   const genai = new GoogleGenerativeAI(apiKey);
-  const model = genai.getGenerativeModel({ model: "gemini-1.5-pro" });
+  const model = genai.getGenerativeModel({ model: "gemini-2.5-flash" });
 
   const prompt = buildAnalysisPrompt(code, hint);
 
@@ -52,7 +70,7 @@ export async function analyzeVideo(
   const result = await model.generateContent([
     {
       fileData: {
-        fileUri: upload.file.uri,
+        fileUri: fileState.uri,
         mimeType: videoFile.mimeType,
       },
     },
