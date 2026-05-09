@@ -2,6 +2,27 @@
 
 import { useEffect, useRef, useState } from "react";
 
+function escapeHtml(input: string) {
+  return input
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+function highlightCodeLine(raw: string) {
+  const escaped = escapeHtml(raw);
+  const tokenRegex =
+    /(\/\/.*$)|("(?:[^"\\]|\\.)*")|\b(const|return|function|let|var|import|export|from)\b|(?<![a-zA-Z])(\d+\.?\d*)(?![a-zA-Z])/g;
+
+  return escaped.replace(tokenRegex, (match, comment, quoted, keyword, number) => {
+    if (comment) return `<span style="color:#374151">${comment}</span>`;
+    if (quoted) return `<span style="color:#a3e635">${quoted}</span>`;
+    if (keyword) return `<span style="color:#c084fc">${keyword}</span>`;
+    if (number) return `<span style="color:#fb923c">${number}</span>`;
+    return match;
+  });
+}
+
 // ── Data ──────────────────────────────────────────────────────────────────
 const SLIDES = [
   {
@@ -95,13 +116,6 @@ function Code({ code, variant }: { code: string; variant: "broken" | "fixed" }) 
         const bg = isHit ? (variant === "broken" ? red : green) : "transparent";
         const bar = isHit ? (variant === "broken" ? redBar : greenBar) : "transparent";
 
-        // token coloring
-        const colored = raw
-          .replace(/(".*?")/g, '<s class="str">$1</s>')
-          .replace(/\b(const|return|function|let|var|import|export|from|default)\b/g, '<k>$1</k>')
-          .replace(/\b(\d+\.?\d*)\b/g, '<n>$1</n>')
-          .replace(/(\/\/.*)/g, '<c>$1</c>');
-
         return (
           <div key={i} style={{
             display: "flex", gap: "1.1rem",
@@ -117,12 +131,7 @@ function Code({ code, variant }: { code: string; variant: "broken" | "fixed" }) 
             }}>{i + 1}</span>
             <span
               style={{ whiteSpace: "pre", color: "rgba(240,240,240,0.5)" }}
-              dangerouslySetInnerHTML={{ __html: raw
-                .replace(/("(?:[^"\\]|\\.)*?")/g, `<span style="color:#a3e635">$1</span>`)
-                .replace(/\b(const|return|function|let|var|import|export|from)\b/g, `<span style="color:#c084fc">$1</span>`)
-                .replace(/(?<![a-zA-Z])(\d+\.?\d*)(?![a-zA-Z])/g, `<span style="color:#fb923c">$1</span>`)
-                .replace(/(\/\/.*)/g, `<span style="color:#374151">$1</span>`)
-              }}
+              dangerouslySetInnerHTML={{ __html: highlightCodeLine(raw) }}
             />
           </div>
         );
