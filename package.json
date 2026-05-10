@@ -1,23 +1,41 @@
 {
   "name": "motif-mcp",
   "version": "1.0.0",
-  "description": "MCP server that lets AI assistants watch video bugs and return fixes via Gemini 1.5 Pro",
+  "description": "MCP server — give your AI coding assistant the ability to watch a video or GIF of a UI bug and return a diagnosis + code fix. Powered by Gemini 2.5 Flash.",
   "main": "dist/index.js",
   "bin": {
     "motif-mcp": "dist/index.js"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "tsx src/index.ts",
     "build": "tsc",
+    "prepare": "npm run build",
     "start": "node dist/index.js"
+  },
+  "engines": {
+    "node": ">=18"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Ashad001/motif.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "ai",
+    "gemini",
+    "bug",
+    "video",
+    "cursor",
+    "claude",
+    "llm",
+    "debugging"
+  ],
+  "author": "Ashad001",
+  "license": "MIT",
   "type": "module",
   "bugs": {
     "url": "https://github.com/Ashad001/motif/issues"

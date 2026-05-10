@@ -8,20 +8,22 @@ Some bugs only exist in motion — the jank on scroll, the animation that oversh
 
 **motif** is an MCP server. Record your bug, point your AI at the file, and it comes back with a diagnosis and a fix. No describing what you're seeing. No back and forth.
 
-Works with Cursor, Claude Code, Claude Desktop, or anything that speaks MCP.
+Powered by Gemini 2.5 Flash. Works with Cursor, Claude Code, Claude Desktop, or anything that speaks MCP.
 
 ---
 
 ## Install
 
-```bash
-npm install -g motif-mcp
-```
-
-Or run without installing:
+No install needed — npx pulls the latest version automatically:
 
 ```bash
 npx motif-mcp
+```
+
+Or install globally if you prefer:
+
+```bash
+npm install -g motif-mcp
 ```
 
 ---
@@ -145,8 +147,8 @@ Structured JSON returned      →  Parsed, formatted, delivered
 Fix applied in your editor    →  Done
 ```
 
-Gemini is the right model here because it processes video as a frame
-sequence — it sees the stutter at 0.3s, the element that overshoots,
+Gemini 2.5 Flash is the right model here because it processes video as a
+frame sequence — it sees the stutter at 0.3s, the element that overshoots,
 the state that never resolves.
 
 ---

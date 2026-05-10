@@ -17,7 +17,7 @@ const STEPS = [
     num: "03 ///",
     glyph: "◈",
     title: "Gemini Watches It",
-    desc: "motif uploads to Gemini 1.5 Pro via the Files API. It processes video as sequence — not isolated frames.",
+    desc: "motif uploads to Gemini 2.5 Flash via the Files API. It processes video as sequence — not isolated frames.",
   },
   {
     num: "04 ///",

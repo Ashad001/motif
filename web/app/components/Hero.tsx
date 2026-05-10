@@ -77,7 +77,7 @@ export default function Hero() {
       >
         Drop a recording. Get the fix. No describing, no words.
         <br />
-        Powered by Gemini 1.5 Pro — the only model that watches video natively.
+        Powered by Gemini 2.5 Flash — the only model that watches video natively.
       </p>
 
       {/* CTAs */}
