@@ -1,7 +1,5 @@
 "use client";
 
-import DemoVisual from "./DemoVisual";
-
 const CHIPS = ["Cursor", "Claude Code", "Claude Desktop", "Any MCP Client"];
 
 export default function Hero() {
@@ -154,8 +152,23 @@ export default function Hero() {
         </a>
       </div>
 
-      {/* Live demo */}
-      <DemoVisual />
+      {/* Live demo — rendered video */}
+      <div style={{
+        maxWidth: 900,
+        width: "100%",
+        margin: "3.5rem auto 0",
+        border: "1px solid rgba(240,240,240,0.1)",
+        position: "relative",
+      }}>
+        <video
+          src="/demo.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          style={{ width: "100%", display: "block" }}
+        />
+      </div>
 
       {/* Works With */}
       <div
