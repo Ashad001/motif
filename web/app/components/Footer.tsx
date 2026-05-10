@@ -14,7 +14,7 @@ export default function Footer() {
         alignItems: "center",
         justifyContent: "space-between",
         flexWrap: "wrap",
-        gap: "1rem",
+        gap: "1.5rem",
       }}
     >
       <div>

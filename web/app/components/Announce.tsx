@@ -7,8 +7,8 @@ export default function Announce() {
         textAlign: "center",
         padding: "8px 16px",
         fontFamily: "var(--font-mono), monospace",
-        fontSize: "0.68rem",
-        letterSpacing: "0.12em",
+        fontSize: "clamp(0.55rem, 1.8vw, 0.68rem)",
+        letterSpacing: "0.1em",
         textTransform: "uppercase",
         color: "rgba(240,240,240,0.5)",
       }}

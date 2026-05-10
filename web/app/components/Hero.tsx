@@ -13,7 +13,7 @@ export default function Hero() {
         alignItems: "center",
         justifyContent: "center",
         textAlign: "center",
-        padding: "60px 6% 60px",
+        padding: "clamp(40px, 8vw, 80px) 6%",
         position: "relative",
       }}
     >
@@ -156,9 +156,10 @@ export default function Hero() {
       <div style={{
         maxWidth: 900,
         width: "100%",
-        margin: "3.5rem auto 0",
+        margin: "clamp(2rem, 5vw, 3.5rem) auto 0",
         border: "1px solid rgba(240,240,240,0.1)",
         position: "relative",
+        overflowX: "hidden",
       }}>
         <video
           src="/demo.mp4"

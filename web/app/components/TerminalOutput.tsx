@@ -103,10 +103,11 @@ export default function TerminalOutput() {
         {/* Body */}
         <div
           style={{
-            padding: "1.6rem 2rem 2rem",
+            padding: "1.6rem clamp(1rem, 4vw, 2rem) 2rem",
             fontFamily: "var(--font-mono), monospace",
-            fontSize: "0.78rem",
+            fontSize: "clamp(0.65rem, 1.8vw, 0.78rem)",
             lineHeight: 1.85,
+            overflowX: "auto",
           }}
         >
           <Line>
