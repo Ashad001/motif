@@ -1,18 +1,14 @@
 # motif
 
-> AI can see screenshots. Now it can see your bugs move.
+> Your AI can now watch your bugs.
 
-![motif demo](examples/demo.gif)
+<video src="examples/demo.mp4" autoplay loop muted playsinline width="100%"></video>
 
-Bugs live in motion. Hover states, scroll jank, animation glitches,
-transition flickers — you can't screenshot a stutter.
+Some bugs only exist in motion — the jank on scroll, the animation that overshoots, the transition that flickers for half a second and then fixes itself. You can't paste a screenshot of that into your editor and expect a useful answer.
 
-**motif** is an MCP server that lets Cursor, Claude Code, and any
-MCP-compatible AI assistant watch a video or GIF of your UI bug
-and return a structured diagnosis + code fix. Powered by Gemini 2.5 Flash
-by default — the only model family that watches video as a sequence natively.
+**motif** is an MCP server. Record your bug, point your AI at the file, and it comes back with a diagnosis and a fix. No describing what you're seeing. No back and forth.
 
-Drop a recording. Get the fix. No describing, no words.
+Works with Cursor, Claude Code, Claude Desktop, or anything that speaks MCP.
 
 ---
 
@@ -251,6 +247,20 @@ src/
 ├── analyze.ts    Core logic — uploads to Gemini, parses response
 ├── extract.ts    File validation, format detection, path resolution
 └── prompts.ts    All Gemini prompts — edit here, not inline
+
+web/                         Next.js landing page
+├── app/
+│   ├── page.tsx
+│   ├── layout.tsx
+│   ├── globals.css
+│   └── components/
+│       ├── Hero.tsx         Hero with embedded demo video
+│       ├── DemoVisual.tsx   Interactive React fallback component
+│       ├── HowItWorks.tsx
+│       ├── Install.tsx
+│       └── ...
+└── public/
+    └── demo.mp4             Pre-rendered demo video (committed to repo)
 ```
 
 ---

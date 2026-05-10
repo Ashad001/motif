@@ -37,3 +37,6 @@ next-env.d.ts
 
 # build output
 dist/
+
+# remotion — not pushed, demo.mp4 is pre-rendered into web/public/
+/remotion/
