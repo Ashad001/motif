@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Bebas_Neue, JetBrains_Mono, DM_Sans } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const bebas = Bebas_Neue({
@@ -23,7 +24,7 @@ const dm = DM_Sans({
 export const metadata: Metadata = {
   title: "motif — your AI watches bugs move",
   description:
-    "MCP server that lets AI coding assistants watch a video or GIF of a UI bug and return a diagnosis + code fix. Powered by Gemini 1.5 Pro.",
+    "MCP server that lets AI coding assistants watch a video or GIF of a UI bug and return a diagnosis + code fix. Powered by Gemini 2.5 Flash.",
 };
 
 export default function RootLayout({
@@ -34,7 +35,10 @@ export default function RootLayout({
       lang="en"
       className={`${bebas.variable} ${mono.variable} ${dm.variable} antialiased`}
     >
-      <body style={{ fontFamily: "var(--font-dm), sans-serif" }}>{children}</body>
+      <body style={{ fontFamily: "var(--font-dm), sans-serif" }}>
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
