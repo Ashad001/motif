@@ -44,7 +44,8 @@ npm install -g motif-mcp
       "command": "npx",
       "args": ["motif-mcp"],
       "env": {
-        "GEMINI_API_KEY": "your-key-here"
+        "GEMINI_API_KEY": "your-key-here",
+        "MOTIF_MODEL": "gemini-2.5-flash"
       }
     }
   }
@@ -59,7 +60,8 @@ npm install -g motif-mcp
       "command": "npx",
       "args": ["motif-mcp"],
       "env": {
-        "GEMINI_API_KEY": "your-key-here"
+        "GEMINI_API_KEY": "your-key-here",
+        "MOTIF_MODEL": "gemini-2.5-flash"
       }
     }
   }
