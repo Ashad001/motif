@@ -102,8 +102,9 @@ export function registerTools(server: Server) {
         ? `\nDIFF:\n${result.diff_before_after}\n`
         : "";
 
+      const modelName = process.env["MOTIF_MODEL"] ?? "gemini-2.5-flash";
       const output = [
-        `motif analyzed ${args.video_path} (${result.frames_analyzed} frames)\n`,
+        `motif analyzed ${args.video_path} (${result.frames_analyzed} frames · ${modelName})\n`,
         `WHAT I SEE:\n${result.what_i_see}\n`,
         `ROOT CAUSE:\n${result.root_cause}\n`,
         `FIX:\n${result.fix}`,

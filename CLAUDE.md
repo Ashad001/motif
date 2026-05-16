@@ -10,14 +10,14 @@ assistants (Cursor, Claude Code) the ability to watch a video or GIF
 of a UI bug and return a diagnosis + code fix.
 
 The user records a bug. They tell their AI editor to "watch" it.
-motif handles the video analysis via Gemini 1.5 Pro and returns
+motif handles the video analysis via Gemini 2.5 Flash and returns
 structured output the AI can act on.
 
 ## Stack
 
 - **Runtime:** Node.js 18+, TypeScript
 - **MCP SDK:** `@modelcontextprotocol/sdk`
-- **AI model:** Google Gemini 1.5 Pro (via `@google/generative-ai`)
+- **AI model:** Google Gemini 2.5 Flash (via `@google/generative-ai`), configurable via `MOTIF_MODEL`
 - **Package manager:** npm
 - **Build:** `tsc` → `dist/`
 
